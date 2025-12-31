@@ -334,3 +334,20 @@ the Free Software Foundation, either version 3 of the License.
 **Made with ❤️ by HF-TGPro Team**
 
 </div>
+
+部署方式：
+1.安装宝塔-安装docker-上传源码压缩包-解压-整个压缩包777 www权限
+2.把.env.example重命名为.env并且编辑以下信息
+#TGAOPI
+BOT_TOKEN=8422817554:AAFUCsTFcK
+#收款地址
+BOT_CONTROL_ADDRESS=TKYp9dbDs6kHKtFhFR6srEJvDARNYkq9Qe
+#TG的联系方式
+BOT_CUSTOMER_SERVICE_ID=https://t.me/HFTGID
+#机器人联系方式
+BOT_TIAOZHUAN=https://t.me/HFTGPRObot
+#TG的ID
+BOT_ADMIN_ID=tg的id
+3.在源码文件里 点击文件终端 执行命令
+
+docker-compose up -d --build
