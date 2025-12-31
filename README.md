@@ -351,3 +351,12 @@ BOT_ADMIN_ID=tg的id
 3.在源码文件里 点击文件终端 执行命令
 
 docker-compose up -d --build
+
+
+### 💡 提交代码
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
