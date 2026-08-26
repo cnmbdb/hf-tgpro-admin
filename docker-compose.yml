@@ -1,0 +1,118 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: tgpro-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD must be set in .env}
+      MYSQL_DATABASE: ${DB_NAME:-hftgpro}
+      MYSQL_USER: ${DB_USER:?DB_USER must be set in .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+      TZ: Asia/Shanghai
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tgpro-network
+
+  app:
+    image: ghcr.io/cnmbdb/tgpro-admin:latest
+    container_name: tgpro-app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    user: root
+    # 不暴露端口到主机，仅通过 cloudflared tunnel 访问
+    expose:
+      - "3000"
+    volumes:
+      # 配置文件（运行时读取）
+      - ./.env:/app/.env
+      # Docker socket（用于容器管理）
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - DB_HOST=db
+      - DB_PORT=3306
+      - NUXT_DB_HOST=${DB_HOST:-db}
+      - NUXT_DB_USER=${DB_USER:?DB_USER must be set in .env}
+      - NUXT_DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+      - NUXT_DB_NAME=${DB_NAME:-hftgpro}
+      - NUXT_DB_PORT=${DB_PORT:-3306}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    networks:
+      - tgpro-network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: tgpro-tunnel
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN} ${CLOUDFLARE_TUNNEL_ID}
+    depends_on:
+      - app
+      - bot
+    networks:
+      - tgpro-network
+
+  bot:
+    image: ghcr.io/cnmbdb/tgpro-admin-bot:latest
+    container_name: tgpro-bot
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-hftgpro}
+      - DB_USER=${DB_USER:?DB_USER must be set in .env}
+      - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD must be set in .env}
+      - TZ=Asia/Shanghai
+      - PYTHONUNBUFFERED=1
+      - BOT_HOST=bot
+      - BOT_WEBHOOK_PORT=8081
+    volumes:
+      - ./hf-tgpro/logs:/app/logs
+      - ./hf-tgpro/keyword_replies.json:/app/keyword_replies.json
+      - ./.env:/app/.env:ro
+      - ./hf-tgpro/.config_reload_trigger:/app/.config_reload_trigger
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - tgpro-network
+
+
+networks:
+  tgpro-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

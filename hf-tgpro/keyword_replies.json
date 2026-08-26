@@ -1,0 +1,208 @@
+{
+  "commands": {
+    "/start": [
+      {
+        "id": "start_text",
+        "type": "text",
+        "content": "🎉 您好，{username}！\n✨ 欢迎使用全新升级的Telegram会员充值机器人\n🆔 您的专属平台ID：{user_id}",
+        "order": 1
+      },
+      {
+        "id": "start_image_buttons",
+        "type": "image_text_buttons",
+        "image": "photo.jpg",
+        "content": "🤖 本机器人为您提供【24小时·Telegram会员】自助开通服务\n💎 享受高级功能，提升您的Telegram体验\n👇 请选择下方按钮开始：",
+        "buttons": [
+          [
+            {
+              "text": "🌟此账号开通",
+              "callback_data": "buy_myself"
+            },
+            {
+              "text": "🎁为他人开通",
+              "callback_data": "buy_ship"
+            }
+          ],
+          [
+            {
+              "text": "🔸会员价格🔸",
+              "callback_data": "buy_price"
+            }
+          ],
+          [
+            {
+              "text": "🔸批量开会员🔸",
+              "callback_data": "buy_ship"
+            }
+          ]
+        ],
+        "order": 2
+      }
+    ]
+  },
+  "buttons": {
+    "🌟购买会员": [
+      {
+        "id": "buy_member_image_buttons",
+        "type": "image_text_buttons",
+        "image": "photo.jpg",
+        "content": "🤖 本机器人为您提供【24小时·Telegram会员】自助开通服务\n💎 享受高级功能，提升您的Telegram体验\n👇 请选择下方按钮开始：",
+        "buttons": [
+          [
+            {
+              "text": "🌟此账号开通",
+              "callback_data": "buy_myself"
+            },
+            {
+              "text": "🎁为他人开通",
+              "callback_data": "buy_ship"
+            }
+          ],
+          [
+            {
+              "text": "🔸会员价格🔸",
+              "callback_data": "buy_price"
+            }
+          ],
+          [
+            {
+              "text": "🔸批量开会员🔸",
+              "callback_data": "buy_ship"
+            }
+          ]
+        ],
+        "order": 1
+      }
+    ],
+    "👩联系客服": [
+      {
+        "id": "contact_service_text_buttons",
+        "type": "text_buttons",
+        "content": "📞 *联系客服*\n\n如果您在使用过程中遇到任何问题，请点击下方按钮联系客服\n\n🕐 客服时间：24小时在线\n⚡ 响应时间：通常在5分钟内回复",
+        "buttons": [
+          [
+            {
+              "text": "💬 在线客服",
+              "url": "{CUSTOMER_SERVICE_URL}"
+            }
+          ]
+        ],
+        "order": 1
+      }
+    ],
+    "⚡️我要充值": [
+      {
+        "id": "recharge_text_buttons",
+        "type": "text_buttons",
+        "content": "💰 *选择充值金额*\n\n请在下方选择您要充值的金额：\n💳 支持USDT充值\n⚡ 到账时间：1-3分钟",
+        "buttons": [
+          [
+            {
+              "text": "2",
+              "callback_data": "2"
+            },
+            {
+              "text": "40",
+              "callback_data": "40"
+            },
+            {
+              "text": "60",
+              "callback_data": "60"
+            },
+            {
+              "text": "80",
+              "callback_data": "80"
+            },
+            {
+              "text": "100",
+              "callback_data": "100"
+            }
+          ],
+          [
+            {
+              "text": "33",
+              "callback_data": "33"
+            },
+            {
+              "text": "66",
+              "callback_data": "66"
+            },
+            {
+              "text": "99",
+              "callback_data": "99"
+            },
+            {
+              "text": "132",
+              "callback_data": "132"
+            },
+            {
+              "text": "165",
+              "callback_data": "165"
+            }
+          ],
+          [
+            {
+              "text": "49",
+              "callback_data": "49"
+            },
+            {
+              "text": "98",
+              "callback_data": "98"
+            },
+            {
+              "text": "147",
+              "callback_data": "147"
+            },
+            {
+              "text": "196",
+              "callback_data": "196"
+            },
+            {
+              "text": "245",
+              "callback_data": "245"
+            }
+          ],
+          [
+            {
+              "text": "🔙返回主菜单",
+              "callback_data": "back"
+            }
+          ]
+        ],
+        "order": 1
+      }
+    ],
+    "👤个人中心": [
+      {
+        "id": "user_center_text",
+        "type": "text",
+        "content": "👤 *个人中心*\n\n您的信息：\n🆔 平台ID：{user_id}\n💰 当前余额：{balance} USDT\n📅 创建时间：{create_time}\n\n💡 提示：余额可用于购买Telegram会员服务",
+        "order": 1
+      }
+    ],
+    "buy_myself": [
+      {
+        "id": "buy_myself_text",
+        "type": "text",
+        "content": "🌟 *为此账号开通会员*\n\n请选择会员时长：",
+        "order": 1
+      }
+    ],
+    "buy_price": [
+      {
+        "id": "buy_price_text_buttons",
+        "type": "text_buttons",
+        "content": "💰 *会员价格表*\n\n点击下方按钮查看实时价格",
+        "buttons": [
+          [
+            {
+              "text": "🔙返回",
+              "callback_data": "back"
+            }
+          ]
+        ],
+        "order": 1
+      }
+    ]
+  }
+}
